@@ -18,12 +18,12 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Build with dependencies
       run: |
-        gem uninstall bundler
-        gem install bundler -v 1.13
+        gem install bundler -v 2.1
         bundle install
     - name: Test with rspec
       run: |
         bundle exec rspec spec/
+    # TODO: sort out rubocop
     # - name: Lint with rubocop
     #   run: |
     #     bundle exec rubocop

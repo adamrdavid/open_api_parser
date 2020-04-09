@@ -106,7 +106,7 @@ RSpec.describe OpenApiParser::Reference do
 
       context "given a $ref path the same as the base path" do
         it "reuses the current document" do
-          expect(YAML).to_not receive(:load)
+          expect(YAML).to_not receive(:safe_load)
           document = {"current" => true}
           ref = OpenApiParser::Reference.new('person.yaml')
           _, referrent_doc, _ = ref.resolve('person.yaml', '', document, file_cache)
@@ -184,8 +184,8 @@ RSpec.describe OpenApiParser::Reference do
         let(:ref_path) { "standard.yaml" }
 
         before do
-          expect(YAML).to_not(
-            receive(:load_file).with(base_path))
+          expect(File).to_not(
+            receive(:read).with(base_path))
         end
 
         [
@@ -213,8 +213,8 @@ RSpec.describe OpenApiParser::Reference do
         let(:ref_path) { "another_standard.yaml" }
 
         before do
-          expect(YAML).to(
-            receive(:load_file).with(cwd_relative("spec/resources/another_standard.yaml")).and_return(document))
+          expect(File).to(
+            receive(:read).with(cwd_relative("spec/resources/another_standard.yaml")).and_return(document.to_yaml))
         end
         [
           ["", "", STANDARD_DOCUMENT, ""],
@@ -284,8 +284,8 @@ RSpec.describe OpenApiParser::Reference do
         let(:ref_path) { 'another_standard.yaml' }
 
         before do
-          expect(YAML).to(
-            receive(:load_file).with(cwd_relative("spec/resources/another_standard.yaml")).and_return(document))
+          expect(File).to(
+            receive(:read).with(cwd_relative("spec/resources/another_standard.yaml")).and_return(document.to_yaml))
         end
         [
           ['', '', true],
