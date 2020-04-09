@@ -12,3 +12,5 @@
 /vendor/bundle
 /open_api_parser*.gem
 /bin
+
+.tool-versions
