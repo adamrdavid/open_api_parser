@@ -20,7 +20,7 @@ components:
         name:
           type: string
         legs:
-          type: integer
+          $ref: 'valid_erb.yaml.erb#/legsSchema'
 
     validResponse:
       type: object
