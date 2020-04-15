@@ -23,7 +23,7 @@ jobs:
     - name: Test with rspec
       run: |
         bundle exec rspec spec/
-    # TODO: finish fixing cops
-    # - name: Lint with rubocop
-    #   run: |
-    #     bundle exec rubocop
+    - name: Lint with rubocop
+      run: |
+        bundle exec rubocop
+        

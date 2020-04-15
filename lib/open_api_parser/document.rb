@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenApiParser
   class Document
     def self.resolve(path, file_cache = OpenApiParser::FileCache.new)
@@ -34,15 +36,15 @@ module OpenApiParser
     end
 
     def expand_refs(fragment, current_pointer)
-      if fragment.is_a?(Hash) && fragment.key?("$ref")
-        raw_uri = fragment["$ref"]
+      if fragment.is_a?(Hash) && fragment.key?('$ref')
+        raw_uri = fragment['$ref']
         ref = OpenApiParser::Reference.new(raw_uri)
         fully_resolved, referrent_document, referrent_pointer =
           ref.resolve(@path, current_pointer, @content, @file_cache)
-        unless fully_resolved
-          expand_refs(referrent_document, referrent_pointer)
-        else
+        if fully_resolved
           [referrent_document, referrent_pointer]
+        else
+          expand_refs(referrent_document, referrent_pointer)
         end
       else
         [fragment, current_pointer]

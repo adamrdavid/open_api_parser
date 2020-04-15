@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module OpenApiParser
   module Specification
-    META_SCHEMA_PATH = File.expand_path("../../../resources/swagger_meta_schema.json", __FILE__)
+    META_SCHEMA_PATH = File.expand_path('../../resources/swagger_meta_schema.json', __dir__)
 
     def self.resolve(path, validate_meta_schema: true)
       raw_specification = Document.resolve(path)
