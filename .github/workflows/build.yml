@@ -25,4 +25,4 @@ jobs:
         bundle exec rspec spec/
     - name: Lint with rubocop
       run: |
-        bundle exec rubocop --verbose && bundle exec rubocop
+        bundle exec rubocop

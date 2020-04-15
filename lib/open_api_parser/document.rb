@@ -4,7 +4,7 @@ module OpenApiParser
   class Document
     def self.resolve(path, file_cache = OpenApiParser::FileCache.new)
       file_cache.get(path) do
-        content = YAML.load_file(path)
+        content = YAML.safe_load(ERB.new(File.read(path)).result)
         Document.new(path, content, file_cache).resolve
       end
     end

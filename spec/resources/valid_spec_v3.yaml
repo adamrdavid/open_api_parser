@@ -1,0 +1,231 @@
+openapi: 3.0.0
+
+info:
+  title: Simple API overview
+  version: "1"
+
+# produces:
+#   - application/json
+# consumes:
+#   - application/json
+
+components:
+  schemas:
+    createAnimal:
+      type: object
+      required:
+        - name
+        - legs
+      properties:
+        name:
+          type: string
+        legs:
+          $ref: 'valid_erb.yaml.erb#/legsSchema'
+
+    validResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+
+    createSearch:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+
+    personInfo:
+      type: object
+      properties:
+        name:
+          type: string
+
+    personInfoResponse:
+      type: object
+      properties:
+        info:
+          $ref: '#/components/schemas/personInfo'
+
+    searchResponse:
+      type: object
+      required:
+        - name
+        - legs
+      properties:
+        name:
+          type: string
+        legs:
+          type: integer
+
+    errorResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - bad
+
+paths:
+  /animals:
+    post:
+      requestBody:
+        description: Create an animal
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                  - body
+              properties:
+                body:
+                  $ref: "#/components/schemas/createAnimal"
+      responses:
+        201:
+          description: Valid create
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validResponse"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
+  /animals/{id}:
+    get:
+      operationId: getAnimal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - small
+              - large
+        - name: age
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: User-Id
+          in: header
+          required: false
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Valid get animal
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validResponse"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+    delete:
+      operationId: deleteAnimal
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Valid delete
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
+  /animals/search:
+    post:
+      summary: Create a search query for animals
+      operationId: searchAnimals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  $ref: "#/components/schemas/createSearch"
+      responses:
+        200:
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/searchResponse"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
+  /people/{id}:
+    get:
+      operationId: getPerson
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Valid get person
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/personInfoResponse"
+        default:
+          description: Error response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errorResponse"
+
+  /headers:
+    get:
+      operationId: getHeaders
+      responses:
+        200:
+          description: Valid get headers
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validResponse"
+          headers:
+            X-My-Header:
+              schema:
+                type: string
+                enum:
+                  - "my value"

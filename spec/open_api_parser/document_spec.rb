@@ -41,6 +41,16 @@ RSpec.describe OpenApiParser::Document do
 
         expect(json['person_greeting']).to eq('Drew')
       end
+
+      it 'resolves mix of pointers and erb files' do
+        path = File.expand_path('../resources/valid_spec_v3.yaml', __dir__)
+        json = OpenApiParser::Document.resolve(path)
+
+        erb_result = [1, 2, 3].sum
+
+        expect(json.dig('components', 'schemas', 'createAnimal', 'properties', 'legs', 'maximum'))
+          .to eq erb_result
+      end
     end
 
     context 'json' do

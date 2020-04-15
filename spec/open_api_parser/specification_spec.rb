@@ -4,6 +4,33 @@ require 'spec_helper'
 
 RSpec.describe OpenApiParser::Specification do
   describe 'self.resolve' do
+    context 'valid 3.0 specification' do
+      let(:path) { File.expand_path('../resources/valid_spec_v3.yaml', __dir__) }
+      let(:specification) { OpenApiParser::Specification.resolve(path) }
+
+      it 'resolves successfully' do
+        expect(specification.raw.fetch('openapi')).to eq('3.0.0')
+      end
+
+      it 'properly resolves matching substring references' do
+        expanded_info_response = {
+          'type' => 'object',
+          'properties' => {
+            'info' => {
+              'type' => 'object',
+              'properties' => {
+                'name' => {
+                  'type' => 'string'
+                }
+              }
+            }
+          }
+        }
+
+        expect(specification.raw.dig('components', 'schemas', 'personInfoResponse')).to eq(expanded_info_response)
+      end
+    end
+
     context 'valid specification' do
       let(:path) { File.expand_path('../resources/valid_spec.yaml', __dir__) }
       let(:specification) { OpenApiParser::Specification.resolve(path) }
