@@ -13,54 +13,6 @@ Gemspec/RequiredRubyVersion:
   Exclude:
     - 'open_api_parser.gemspec'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterMagicComment:
-  Exclude:
-    - 'lib/open_api_parser/document.rb'
-    - 'lib/open_api_parser/specification.rb'
-    - 'spec/open_api_parser/document_spec.rb'
-    - 'spec/open_api_parser/reference_spec.rb'
-    - 'spec/open_api_parser/specification_spec.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: consistent, consistent_relative_to_receiver, special_for_inner_method_call, special_for_inner_method_call_in_parentheses
-Layout/IndentFirstArgument:
-  Exclude:
-    - 'spec/open_api_parser/document_spec.rb'
-
-# Offense count: 12
-# Cop supports --auto-correct.
-# Configuration parameters: IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_braces
-Layout/IndentFirstHashElement:
-  EnforcedStyle: consistent
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: symmetrical, new_line, same_line
-Layout/MultilineMethodCallBraceLayout:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 19
-# Cop supports --auto-correct.
-Layout/SpaceAfterComma:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 20
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBraces: space, no_space
-Layout/SpaceInsideHashLiteralBraces:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
 # Offense count: 2
 Lint/ShadowingOuterLocalVariable:
   Exclude:
@@ -87,26 +39,6 @@ Metrics/ClassLength:
 Metrics/MethodLength:
   Max: 19
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, IgnoredMethods, AllowBracesOnProceduralOneLiners.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# IgnoredMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 16
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: braces, no_braces, context_dependent
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'spec/open_api_parser/document_spec.rb'
-    - 'spec/open_api_parser/reference_spec.rb'
-
 # Offense count: 7
 Style/Documentation:
   Exclude:
@@ -119,75 +51,6 @@ Style/Documentation:
     - 'lib/open_api_parser/specification.rb'
     - 'lib/open_api_parser/specification/endpoint.rb'
     - 'lib/open_api_parser/specification/root.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'lib/open_api_parser/specification.rb'
-    - 'spec/open_api_parser/document_spec.rb'
-    - 'spec/open_api_parser/specification_spec.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, never
-Style/FrozenStringLiteralComment:
-  Exclude:
-    - 'lib/open_api_parser/document.rb'
-    - 'lib/open_api_parser/specification.rb'
-    - 'spec/open_api_parser/document_spec.rb'
-    - 'spec/open_api_parser/reference_spec.rb'
-    - 'spec/open_api_parser/specification_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 259
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'lib/open_api_parser/document.rb'
-    - 'lib/open_api_parser/specification.rb'
-    - 'spec/open_api_parser/document_spec.rb'
-    - 'spec/open_api_parser/reference_spec.rb'
-    - 'spec/open_api_parser/specification_spec.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInHashLiteral:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: AllowNamedUnderscoreVariables.
-Style/TrailingUnderscoreVariable:
-  Exclude:
-    - 'spec/open_api_parser/reference_spec.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/UnlessElse:
-  Exclude:
-    - 'lib/open_api_parser/document.rb'
 
 # Offense count: 63
 # Cop supports --auto-correct.
