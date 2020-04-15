@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenApiParser
   module Specification
     class Root
@@ -9,9 +11,9 @@ module OpenApiParser
 
       def endpoint(path, request_method)
         uri = URI.parse(path)
-        requested_path = uri.path.gsub(/\..+\z/, "")
+        requested_path = uri.path.gsub(/\..+\z/, '')
 
-        matching_path_details = @raw["paths"].detect do |path_name, path|
+        matching_path_details = @raw['paths'].detect do |path_name, path|
           requested_path =~ to_pattern(path_name) &&
             path.keys.any? { |method| matching_method?(method, request_method) }
         end
@@ -19,7 +21,7 @@ module OpenApiParser
 
         matching_name, matching_path = matching_path_details
 
-        method_details = matching_path.detect do |method, schema|
+        method_details = matching_path.detect do |method, _schema|
           matching_method?(method, request_method)
         end
 
@@ -28,7 +30,7 @@ module OpenApiParser
         nil
       end
 
-      def to_json
+      def to_json(*_args)
         JSON.generate(@raw)
       end
 
@@ -39,7 +41,7 @@ module OpenApiParser
       end
 
       def to_pattern(path_name)
-        Regexp.new("\\A" + path_name.gsub(/\{[^}]+\}/, "[^/]+") + "\\z")
+        Regexp.new('\\A' + path_name.gsub(/\{[^}]+\}/, '[^/]+') + '\\z')
       end
     end
   end

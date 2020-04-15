@@ -1,317 +1,319 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe OpenApiParser::Specification::Endpoint do
   def root
     @root ||= begin
-      path = File.expand_path("../../../resources/valid_spec.yaml", __FILE__)
+      path = File.expand_path('../../resources/valid_spec.yaml', __dir__)
       OpenApiParser::Specification.resolve(path)
     end
   end
 
-  describe "path" do
-    it "returns the path of the matched operation item" do
-      endpoint = root.endpoint("/animals/1", "get")
-      expect(endpoint.path).to eq "/animals/{id}"
+  describe 'path' do
+    it 'returns the path of the matched operation item' do
+      endpoint = root.endpoint('/animals/1', 'get')
+      expect(endpoint.path).to eq '/animals/{id}'
     end
   end
 
-  describe "method" do
-    it "returns the method of the matched operation item" do
-      endpoint = root.endpoint("/animals", "POST")
-      expect(endpoint.method).to eq "post"
+  describe 'method' do
+    it 'returns the method of the matched operation item' do
+      endpoint = root.endpoint('/animals', 'POST')
+      expect(endpoint.method).to eq 'post'
     end
   end
 
-  describe "body_schema" do
-    it "returns the schema for the body" do
-      endpoint = root.endpoint("/animals", "post")
+  describe 'body_schema' do
+    it 'returns the schema for the body' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.body_schema).to eq({
-        "type" => "object",
-        "required" => ["name", "legs"],
-        "properties" => {
-          "name" => {
-            "type" => "string"
+      expect(endpoint.body_schema).to eq(
+        'type' => 'object',
+        'required' => %w[name legs],
+        'properties' => {
+          'name' => {
+            'type' => 'string'
           },
-          "legs" => {
-            "type" => "integer"
+          'legs' => {
+            'type' => 'integer'
           }
         }
-      })
+      )
     end
 
-    it "returns a restrictive schema if no body is specified" do
-      endpoint = root.endpoint("/animals/1", "get")
+    it 'returns a restrictive schema if no body is specified' do
+      endpoint = root.endpoint('/animals/1', 'get')
 
-      expect(endpoint.body_schema).to eq({
-        "additionalProperties" => false,
-        "properties" => {}
-      })
+      expect(endpoint.body_schema).to eq(
+        'additionalProperties' => false,
+        'properties' => {}
+      )
     end
   end
 
-  describe "header_schema" do
-    it "returns the schema for the headers with normalized names" do
-      endpoint = root.endpoint("/animals/1", "get")
+  describe 'header_schema' do
+    it 'returns the schema for the headers with normalized names' do
+      endpoint = root.endpoint('/animals/1', 'get')
 
-      expect(endpoint.header_schema).to eq({
-        "additionalProperties" => true,
-        "properties" => {
-          "USER_ID" => {
-            "type" => "integer"
+      expect(endpoint.header_schema).to eq(
+        'additionalProperties' => true,
+        'properties' => {
+          'USER_ID' => {
+            'type' => 'integer'
           }
         }
-      })
+      )
     end
 
-    it "returns a permissive schema if there are no headers" do
-      endpoint = root.endpoint("/animals", "post")
+    it 'returns a permissive schema if there are no headers' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.header_schema).to eq({
-        "additionalProperties" => true,
-        "properties" => {}
-      })
+      expect(endpoint.header_schema).to eq(
+        'additionalProperties' => true,
+        'properties' => {}
+      )
     end
   end
 
-  describe "path_schema" do
-    it "returns the schema for the path" do
-      endpoint = root.endpoint("/animals/1", "get")
+  describe 'path_schema' do
+    it 'returns the schema for the path' do
+      endpoint = root.endpoint('/animals/1', 'get')
 
-      expect(endpoint.path_schema).to eq({
-        "additionalProperties" => false,
-        "required" => ["id"],
-        "properties" => {
-          "id" => {
-            "type" => "integer"
+      expect(endpoint.path_schema).to eq(
+        'additionalProperties' => false,
+        'required' => ['id'],
+        'properties' => {
+          'id' => {
+            'type' => 'integer'
           }
         }
-      })
+      )
     end
 
-    it "returns a restrictive schema with no path params" do
-      endpoint = root.endpoint("/animals", "post")
+    it 'returns a restrictive schema with no path params' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.path_schema).to eq({
-        "additionalProperties" => false,
-        "properties" => {}
-      })
+      expect(endpoint.path_schema).to eq(
+        'additionalProperties' => false,
+        'properties' => {}
+      )
     end
   end
 
-  describe "query_schema" do
-    it "returns the schema for the query params" do
-      endpoint = root.endpoint("/animals/1", "get")
+  describe 'query_schema' do
+    it 'returns the schema for the query params' do
+      endpoint = root.endpoint('/animals/1', 'get')
 
-      expect(endpoint.query_schema).to eq({
-        "additionalProperties" => false,
-        "properties" => {
-          "size" => {
-            "type" => "string",
-            "enum" => [
-              "small",
-              "large"
+      expect(endpoint.query_schema).to eq(
+        'additionalProperties' => false,
+        'properties' => {
+          'size' => {
+            'type' => 'string',
+            'enum' => %w[
+              small
+              large
             ]
           },
-          "age" => {
-            "type" => "integer"
+          'age' => {
+            'type' => 'integer'
           },
-          "tag" => {
-            "type" => "string"
+          'tag' => {
+            'type' => 'string'
           }
         }
-      })
+      )
     end
 
-    it "returns a restrictive schema with no query params" do
-      endpoint = root.endpoint("/animals", "post")
+    it 'returns a restrictive schema with no query params' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.query_schema).to eq({
-        "additionalProperties" => false,
-        "properties" => {}
-      })
+      expect(endpoint.query_schema).to eq(
+        'additionalProperties' => false,
+        'properties' => {}
+      )
     end
   end
 
-  describe "response_body_schema" do
-    it "returns the body associated with the response code" do
-      endpoint = root.endpoint("/animals", "post")
+  describe 'response_body_schema' do
+    it 'returns the body associated with the response code' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.response_body_schema(201)).to eq({
-        "type" => "object",
-        "properties" => {
-          "status" => {
-            "type" => "string",
-            "enum" => ["ok"]
+      expect(endpoint.response_body_schema(201)).to eq(
+        'type' => 'object',
+        'properties' => {
+          'status' => {
+            'type' => 'string',
+            'enum' => ['ok']
           }
         },
-        "required" => ["status"],
-      })
+        'required' => ['status']
+      )
     end
 
-    it "handles string or integer response codes" do
-      endpoint = root.endpoint("/animals", "post")
+    it 'handles string or integer response codes' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.response_body_schema("201")).to eq({
-        "type" => "object",
-        "properties" => {
-          "status" => {
-            "type" => "string",
-            "enum" => ["ok"]
+      expect(endpoint.response_body_schema('201')).to eq(
+        'type' => 'object',
+        'properties' => {
+          'status' => {
+            'type' => 'string',
+            'enum' => ['ok']
           }
         },
-        "required" => ["status"],
-      })
+        'required' => ['status']
+      )
     end
 
-    it "returns the default response if present" do
-      endpoint = root.endpoint("/animals", "post")
+    it 'returns the default response if present' do
+      endpoint = root.endpoint('/animals', 'post')
 
-      expect(endpoint.response_body_schema(400)).to eq({
-        "type" => "object",
-        "properties" => {
-          "status" => {
-            "type" => "string",
-            "enum" => ["bad"]
+      expect(endpoint.response_body_schema(400)).to eq(
+        'type' => 'object',
+        'properties' => {
+          'status' => {
+            'type' => 'string',
+            'enum' => ['bad']
           }
         },
-        "required" => ["status"],
-      })
+        'required' => ['status']
+      )
     end
 
-    it "returns a restrictive schema for an unknown code without a default" do
-      endpoint = root.endpoint("/headers", "get")
+    it 'returns a restrictive schema for an unknown code without a default' do
+      endpoint = root.endpoint('/headers', 'get')
 
-      expect(endpoint.response_body_schema(400)).to eq({
-        "additionalProperties" => false,
-        "properties" => {}
-      })
+      expect(endpoint.response_body_schema(400)).to eq(
+        'additionalProperties' => false,
+        'properties' => {}
+      )
     end
 
-    it "returns a restrictive schema if no schema is specified for a known code" do
-      endpoint = root.endpoint("/animals/1", "delete")
+    it 'returns a restrictive schema if no schema is specified for a known code' do
+      endpoint = root.endpoint('/animals/1', 'delete')
 
-      expect(endpoint.response_body_schema(204)).to eq({
-        "additionalProperties" => false,
-        "properties" => {}
-      })
+      expect(endpoint.response_body_schema(204)).to eq(
+        'additionalProperties' => false,
+        'properties' => {}
+      )
     end
   end
 
-  describe "response_body_header" do
-    it "returns the headers associated with the response code" do
-      endpoint = root.endpoint("/headers", "get")
+  describe 'response_body_header' do
+    it 'returns the headers associated with the response code' do
+      endpoint = root.endpoint('/headers', 'get')
 
-      expect(endpoint.response_header_schema(200)).to eq({
-        "additionalProperties" => true,
-        "properties" => {
-          "X_MY_HEADER" => {
-            "type" => "string",
-            "enum" => ["my value"]
+      expect(endpoint.response_header_schema(200)).to eq(
+        'additionalProperties' => true,
+        'properties' => {
+          'X_MY_HEADER' => {
+            'type' => 'string',
+            'enum' => ['my value']
           }
         }
-      })
+      )
     end
 
-    it "handles string or integer response codes" do
-      endpoint = root.endpoint("/headers", "get")
+    it 'handles string or integer response codes' do
+      endpoint = root.endpoint('/headers', 'get')
 
-      expect(endpoint.response_header_schema("200")).to eq({
-        "additionalProperties" => true,
-        "properties" => {
-          "X_MY_HEADER" => {
-            "type" => "string",
-            "enum" => ["my value"]
+      expect(endpoint.response_header_schema('200')).to eq(
+        'additionalProperties' => true,
+        'properties' => {
+          'X_MY_HEADER' => {
+            'type' => 'string',
+            'enum' => ['my value']
           }
         }
-      })
+      )
     end
 
-    it "returns a premissive schema for an unknown code without a default" do
-      endpoint = root.endpoint("/headers", "get")
+    it 'returns a premissive schema for an unknown code without a default' do
+      endpoint = root.endpoint('/headers', 'get')
 
-      expect(endpoint.response_header_schema(400)).to eq({
-        "additionalProperties" => true,
-        "properties" => {}
-      })
+      expect(endpoint.response_header_schema(400)).to eq(
+        'additionalProperties' => true,
+        'properties' => {}
+      )
     end
   end
 
-  describe "header_json" do
-    it "returns a json representation of the headers, given a hash" do
-      endpoint = root.endpoint("/animals/1", "get")
+  describe 'header_json' do
+    it 'returns a json representation of the headers, given a hash' do
+      endpoint = root.endpoint('/animals/1', 'get')
       header_hash = {
-        "User-Id" => "foo"
+        'User-Id' => 'foo'
       }
 
-      expect(endpoint.header_json(header_hash)).to eq({
-        "USER_ID" => "foo"
-      })
+      expect(endpoint.header_json(header_hash)).to eq(
+        'USER_ID' => 'foo'
+      )
     end
 
-    it "parses integers if the value looks like an integer and the schema is an integer" do
-      endpoint = root.endpoint("/animals/1", "get")
+    it 'parses integers if the value looks like an integer and the schema is an integer' do
+      endpoint = root.endpoint('/animals/1', 'get')
       header_hash = {
-        "User-Id" => "123"
+        'User-Id' => '123'
       }
 
-      expect(endpoint.header_json(header_hash)).to eq({
-        "USER_ID" => 123
-      })
+      expect(endpoint.header_json(header_hash)).to eq(
+        'USER_ID' => 123
+      )
     end
   end
 
-  describe "path_json" do
-    it "returns a json representation of the path, given a string" do
-      endpoint = root.endpoint("/animals/1", "get")
+  describe 'path_json' do
+    it 'returns a json representation of the path, given a string' do
+      endpoint = root.endpoint('/animals/1', 'get')
 
-      expect(endpoint.path_json("/animals/1")).to eq({
-        "id" => 1
-      })
+      expect(endpoint.path_json('/animals/1')).to eq(
+        'id' => 1
+      )
     end
 
-    it "parses integers if the value looks like an integer and the schema is an integer" do
-      endpoint = root.endpoint("/animals/1", "get")
+    it 'parses integers if the value looks like an integer and the schema is an integer' do
+      endpoint = root.endpoint('/animals/1', 'get')
 
-      expect(endpoint.path_json("/animals/foo")).to eq({
-        "id" => "foo"
-      })
+      expect(endpoint.path_json('/animals/foo')).to eq(
+        'id' => 'foo'
+      )
 
-      expect(endpoint.path_json("/animals/1")).to eq({
-        "id" => 1
-      })
+      expect(endpoint.path_json('/animals/1')).to eq(
+        'id' => 1
+      )
     end
   end
 
-  describe "query_json" do
-    it "returns a json representation of the query params, given a hash" do
-      endpoint = root.endpoint("/animals/1", "get")
+  describe 'query_json' do
+    it 'returns a json representation of the query params, given a hash' do
+      endpoint = root.endpoint('/animals/1', 'get')
       query_hash = {
-        "size" => "small"
+        'size' => 'small'
       }
 
-      expect(endpoint.query_json(query_hash)).to eq({
-        "size" => "small"
-      })
+      expect(endpoint.query_json(query_hash)).to eq(
+        'size' => 'small'
+      )
     end
 
-    it "parses integers if the value looks like an integer and the schema is an integer" do
-      endpoint = root.endpoint("/animals/1", "get")
+    it 'parses integers if the value looks like an integer and the schema is an integer' do
+      endpoint = root.endpoint('/animals/1', 'get')
       query_hash = {
-        "age" => "25"
+        'age' => '25'
       }
 
-      expect(endpoint.query_json(query_hash)).to eq({
-        "age" => 25
-      })
+      expect(endpoint.query_json(query_hash)).to eq(
+        'age' => 25
+      )
 
       query_hash = {
-        "age" => "twenty"
+        'age' => 'twenty'
       }
 
-      expect(endpoint.query_json(query_hash)).to eq({
-        "age" => "twenty"
-      })
+      expect(endpoint.query_json(query_hash)).to eq(
+        'age' => 'twenty'
+      )
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module OpenApiParser
   class Reference
     def initialize(raw_uri)
@@ -18,7 +20,7 @@ module OpenApiParser
             [true, OpenApiParser::Document.resolve(resolved_uri.path, file_cache), '']
           end
         else
-          fail "$ref with scheme #{ref_uri.scheme} is not supported"
+          raise "$ref with scheme #{ref_uri.scheme} is not supported"
         end
 
       if !ref_uri.fragment.nil? && ref_uri.fragment != ''
@@ -42,7 +44,7 @@ module OpenApiParser
       pointer = OpenApiParser::Pointer.new(raw_pointer)
 
       if pointer.equal_or_ancestor_of?(base_pointer)
-        referrent_document = { "$ref" => '#' + raw_pointer }
+        referrent_document = { '$ref' => '#' + raw_pointer }
         [true, referrent_document, base_pointer]
       else
         referrent_document = pointer.resolve(within_document)
